@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DictionaryFile": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "MainFilePath": "C:\\Projectos\\DictionaryFile\\DictionaryFile\\DictionaryFile"
+      }
+    }
+  }
+}
