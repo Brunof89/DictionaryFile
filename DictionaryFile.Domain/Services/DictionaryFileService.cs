@@ -56,20 +56,27 @@ namespace DictionaryFile.Domain.Services
             var remainingList = shortWords.Skip(startIndex).Take(endIndex - startIndex).ToList();
             int count = 0;
             List<string> resultList = new List<string>();
+            List<int> changedIdxs = new List<int>();
 
             foreach (var word in remainingList)
             {
-                count++;
-                if (count == 1)
+                if (count == 0)
                 {
                     resultList.Add(word);
                 }
                 else
                 {
                     var idx = GetStringIndexDifference(remainingList[count - 1], remainingList[count]);
-
+                    if (changedIdxs.Intersect(changedIdxs).Count() == 0 && idx.Count() == 1)
+                    {
+                        changedIdxs.AddRange(idx);
+                        resultList.Add(word);
+                    }
                 }
+                count++;
             }
+
+            System.IO.File.WriteAllLines(request.ResultFileName, resultList);
         }
 
         /// <summary>

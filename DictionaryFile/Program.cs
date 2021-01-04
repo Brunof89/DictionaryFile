@@ -79,7 +79,7 @@ namespace DictionaryFile
                 {
                     FileName = configuration.GetSection("FileBasePath").Value + dictionaryFilePath,
                     EndWord = endWord,
-                    ResultFileName = resultFile,
+                    ResultFileName = configuration.GetSection("FileBasePath").Value + resultFile,
                     StartWord = startWord
                 };
 
