@@ -41,11 +41,11 @@ namespace DictionaryFile.Domain.Services
         /// <param name="request"></param>
         public void ProcessWords(DictionaryFileRequest request)
         {
-            String[] words = ReadFile(request.FileName);
+            String[] words = this.ReadFile(request.FileName);
 
-            var resultList = ProcessWords(words, request);
+            var resultList = this.GetValidWords(words, request);
 
-            CreateOutputFile(request.ResultFileName, resultList);
+            this.CreateOutputFile(request.ResultFileName, resultList);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DictionaryFile.Domain.Services
         /// produces a output file.
         /// </summary>
         /// <param name="request"></param>
-        public List<string> ProcessWords(String[]words,DictionaryFileRequest request)
+        public List<string> GetValidWords(String[]words,DictionaryFileRequest request)
         {
             //Get only short words
             var shortWords = words
