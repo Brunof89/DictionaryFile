@@ -36,14 +36,25 @@ namespace DictionaryFile.Domain.Services
         }
 
         /// <summary>
-        /// Processes list of words with the design pattern strategy or iterator and
-        /// produces a output file.
+        /// Input method to process file and generate output file
         /// </summary>
         /// <param name="request"></param>
         public void ProcessWords(DictionaryFileRequest request)
         {
-            String[] words = System.IO.File.ReadAllLines(request.FileName);
+            String[] words = ReadFile(request.FileName);
 
+            var resultList = ProcessWords(words, request);
+
+            CreateOutputFile(request.ResultFileName, resultList);
+        }
+
+        /// <summary>
+        /// Algorithim that processes list of words with the design pattern strategy or iterator and
+        /// produces a output file.
+        /// </summary>
+        /// <param name="request"></param>
+        public List<string> ProcessWords(String[]words,DictionaryFileRequest request)
+        {
             //Get only short words
             var shortWords = words
                 .Where(w => w.Length == 4)
@@ -76,7 +87,7 @@ namespace DictionaryFile.Domain.Services
                 count++;
             }
 
-            System.IO.File.WriteAllLines(request.ResultFileName, resultList);
+            return resultList;
         }
 
         /// <summary>
@@ -97,6 +108,26 @@ namespace DictionaryFile.Domain.Services
             }
 
             return idxs;
+        }
+
+        /// <summary>
+        /// Reads file given the file path.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public String[] ReadFile(string fileName)
+        {
+            return System.IO.File.ReadAllLines(fileName);
+        }
+
+        /// <summary>
+        /// Creates the output file given a list os strings
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="resultList"></param>
+        public void CreateOutputFile(string fileName, List<string> resultList)
+        {
+            System.IO.File.WriteAllLines(fileName, resultList);
         }
     }
 }
