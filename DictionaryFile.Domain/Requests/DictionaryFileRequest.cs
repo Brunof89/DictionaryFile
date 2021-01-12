@@ -10,5 +10,6 @@ namespace DictionaryFile.Domain.Requests
         public string StartWord { get; set; }
         public string EndWord { get; set; }
         public string ResultFileName { get; set; }
+        public int WordLength { get; set; }
     }
 }

@@ -57,7 +57,7 @@ namespace DictionaryFile.Domain.Services
         {
             //Get only short words
             var shortWords = words
-                .Where(w => w.Length == 4)
+                .Where(w => w.Length == request.WordLength)
                 .OrderBy(w => w)
                 .ToList();
 

@@ -45,6 +45,7 @@ namespace DictionaryFile
                 string startWord = string.Empty;
                 string endWord = string.Empty;
                 string dictionaryFilePath = string.Empty;
+                int wordsLength = Convert.ToInt32(configuration.GetSection("WordsLength").Value);
 
                 while (!fileExists)
                 {
@@ -59,7 +60,7 @@ namespace DictionaryFile
                     Console.WriteLine("StartWord:");
                     startWord = Console.ReadLine();
                     //Validate length of word
-                    correctWordLength = _dictionaryService.CheckWordLength(startWord, 4);
+                    correctWordLength = _dictionaryService.CheckWordLength(startWord, wordsLength);
                 }
 
                 correctWordLength = false;
@@ -69,7 +70,7 @@ namespace DictionaryFile
                     Console.WriteLine("EndWord:");
                     endWord = Console.ReadLine();
                     //Validate length of word
-                    correctWordLength = _dictionaryService.CheckWordLength(endWord, 4);
+                    correctWordLength = _dictionaryService.CheckWordLength(endWord, wordsLength);
                 }
 
                 Console.WriteLine("ResultFile:");
@@ -80,7 +81,8 @@ namespace DictionaryFile
                     FileName = configuration.GetSection("FileBasePath").Value + dictionaryFilePath,
                     EndWord = endWord,
                     ResultFileName = configuration.GetSection("FileBasePath").Value + resultFile,
-                    StartWord = startWord
+                    StartWord = startWord,
+                    WordLength = wordsLength
                 };
 
                 _dictionaryService.ProcessWords(inputs);
