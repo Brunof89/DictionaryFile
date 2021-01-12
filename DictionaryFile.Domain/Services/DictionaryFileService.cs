@@ -87,6 +87,8 @@ namespace DictionaryFile.Domain.Services
                 count++;
             }
 
+            resultList.Add(request.EndWord);
+
             return resultList;
         }
 

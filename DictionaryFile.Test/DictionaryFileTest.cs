@@ -1,3 +1,4 @@
+using DictionaryFile.Domain.Requests;
 using DictionaryFile.Domain.Services;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -61,6 +62,41 @@ namespace DictionaryFile.Test
         {
             var difference = this.dictionaryFileService.GetStringIndexDifference("ward", "word");
             Assert.AreNotEqual(difference, new List<int> { 2 });
+        }
+
+
+        [Test]
+        public void ValidateWordsTestTrue()
+        {
+            //var inputWords = new string[] { "rant", "rape", "rapt", "rare", "rasa", "rash", "rasp", "rata", "rate" };
+            var inputWords = new string[] { "rant", "ront", "rott", "rotu"};
+            var result = new string[] { "rant", "ront", "rotu"};
+
+            var difference = this.dictionaryFileService.GetValidWords(inputWords, new DictionaryFileRequest 
+            {
+                EndWord = "rotu",
+                FileName ="input",
+                ResultFileName ="output",
+                StartWord= "rant"
+            });
+            Assert.AreEqual(difference, result);
+        }
+
+
+        [Test]
+        public void ValidateWordsTestFalse()
+        {
+            var inputWords = new string[] { "rant", "ront", "rott", "rotu" };
+            var result = new string[] { "rant", "ront", "rotu" };
+
+            var difference = this.dictionaryFileService.GetValidWords(inputWords, new DictionaryFileRequest
+            {
+                EndWord = "rotu",
+                FileName = "input",
+                ResultFileName = "output",
+                StartWord = "rant"
+            });
+            Assert.AreNotEqual(difference, inputWords);
         }
 
     }
