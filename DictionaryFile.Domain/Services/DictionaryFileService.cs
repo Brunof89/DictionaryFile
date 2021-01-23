@@ -1,27 +1,21 @@
 ﻿using DictionaryFile.Domain.Requests;
+using DictionaryFile.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace DictionaryFile.Domain.Services
 {
     public class DictionaryFileService : IDictionaryFileService
     {
-        public DictionaryFileService()
-        {
+        private readonly IFileService _fileService;
 
-        }
-
-        /// <summary>
-        /// Check if file exists.
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public bool CheckFileExists(string fileName)
+        public DictionaryFileService(IFileService fileService)
         {
-            return File.Exists(fileName);
+            _fileService = fileService;
         }
 
         /// <summary>
@@ -41,95 +35,117 @@ namespace DictionaryFile.Domain.Services
         /// <param name="request"></param>
         public void ProcessWords(DictionaryFileRequest request)
         {
-            String[] words = this.ReadFile(request.FileName);
+            if (request == null)
+                throw new ArgumentNullException("Request is empty");
 
-            var resultList = this.GetValidWords(words, request);
+            String[] words = _fileService.ReadFile(request.FileName);
 
-            this.CreateOutputFile(request.ResultFileName, resultList);
+            IEnumerable<IEnumerable<string>> resultList = null;
+
+            words = words.Where(w => w.Length == request.WordLength).ToArray();
+
+            resultList = FindLadders(request.StartWord, request.EndWord, words.ToList());
+
+            _fileService.CreateOutputFile(request.ResultFileName, resultList);
         }
 
-        /// <summary>
-        /// Algorithim that processes list of words with the design pattern strategy or iterator and
-        /// produces a output file.
-        /// </summary>
-        /// <param name="request"></param>
-        public List<string> GetValidWords(String[]words,DictionaryFileRequest request)
+        public List<List<string>> FindLadders(string beginWord, string endWord, List<string> wordList)
         {
-            //Get only short words
-            var shortWords = words
-                .Where(w => w.Length == request.WordLength)
-                .OrderBy(w => w)
-                .ToList();
 
-            var startIndex = shortWords.IndexOf(request.StartWord);
-            var endIndex = shortWords.IndexOf(request.EndWord);
+            Dictionary<string, HashSet<string>> graph = new Dictionary<string, HashSet<string>>();
+            AddWordToGraph(beginWord, graph);
+            foreach (string word in wordList)
+                AddWordToGraph(word, graph);
 
-            var remainingList = shortWords.Skip(startIndex).Take(endIndex - startIndex).ToList();
-            int count = 0;
-            List<string> resultList = new List<string>();
-            List<int> changedIdxs = new List<int>();
+            //Queue For BFS
+            Queue<string> queue = new Queue<string>();
+            //Dictionary to store shortest paths to a word
+            Dictionary<string, List<List<string>>> paths = new Dictionary<string, List<List<string>>>();
 
-            foreach (var word in remainingList)
+            queue.Enqueue(beginWord);
+            paths[beginWord] = new List<List<string>>() { new List<string>() { beginWord } };
+
+            HashSet<string> visited = new HashSet<string>();
+
+            while (queue.Count > 0)
             {
-                if (count == 0)
+
+                string stopWord = queue.Dequeue();
+                //we can terminate loop once we reached the endWord as all paths leads here already visited in previous level 
+                if (stopWord.Equals(endWord))
                 {
-                    resultList.Add(word);
+                    return paths[endWord];
                 }
                 else
                 {
-                    var idx = GetStringIndexDifference(remainingList[count - 1], remainingList[count]);
-                    if (changedIdxs.Intersect(changedIdxs).Count() == 0 && idx.Count() == 1)
+                    if (visited.Contains(stopWord))
+                        continue;
+
+                    visited.Add(stopWord);
+
+                    //Transform word to intermidiate words and find matches
+                    for (int i = 0; i < stopWord.Length; i++)
                     {
-                        changedIdxs.AddRange(idx);
-                        resultList.Add(word);
+
+                        StringBuilder sb = new StringBuilder(stopWord);
+                        sb[i] = '*';
+                        string transform = sb.ToString();
+
+                        if (graph.ContainsKey(transform))
+                        {
+
+                            //Iterating all adj words
+                            foreach (var word in graph[transform])
+                            {
+                                if (!visited.Contains(word))
+                                {
+                                    //fetch all paths leads current word to generate paths to adj/child node 
+                                    foreach (var path in paths[stopWord])
+                                    {
+
+                                        List<string> newPath = new List<string>(path);
+                                        newPath.Add(word);
+
+                                        if (!paths.ContainsKey(word))
+                                            paths[word] = new List<List<string>>() { newPath };
+                                        else if (paths[word][0].Count >= newPath.Count)// we are interested in shortest paths only
+                                            paths[word].Add(newPath);
+                                    }
+                                    queue.Enqueue(word);
+                                }
+                            }
+                        }
                     }
                 }
-                count++;
+
             }
 
-            resultList.Add(request.EndWord);
+            return new List<List<string>>();
 
-            return resultList;
         }
 
-        /// <summary>
-        /// Returns the index of the differente character. If Equal returns -1.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        public List<int> GetStringIndexDifference(string a, string b)
+        //For example word hit can be written as *it,h*t,hi*. 
+        //This method genereates a map from each intermediate word to possible words from our wordlist
+        private void AddWordToGraph(string word, Dictionary<string, HashSet<string>> graph)
         {
-            List<int> idxs = new List<int>();
-            for (int i = 0; i < a.Length; i++)
+
+            for (int i = 0; i < word.Length; i++)
             {
-                if (a[i] != b[i])
+
+                StringBuilder sb = new StringBuilder(word);
+                sb[i] = '*';
+
+                if (graph.ContainsKey(sb.ToString()))
+                    graph[sb.ToString()].Add(word);
+                else
                 {
-                    idxs.Add(i);
+                    HashSet<string> set = new HashSet<string>();
+                    set.Add(word);
+                    graph[sb.ToString()] = set;
                 }
+
             }
 
-            return idxs;
-        }
-
-        /// <summary>
-        /// Reads file given the file path.
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        public String[] ReadFile(string fileName)
-        {
-            return System.IO.File.ReadAllLines(fileName);
-        }
-
-        /// <summary>
-        /// Creates the output file given a list os strings
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="resultList"></param>
-        public void CreateOutputFile(string fileName, List<string> resultList)
-        {
-            System.IO.File.WriteAllLines(fileName, resultList);
         }
     }
 }

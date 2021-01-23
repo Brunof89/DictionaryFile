@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DictionaryFile", "Dictionar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DictionaryFile.Domain", "DictionaryFile.Domain\DictionaryFile.Domain.csproj", "{72AA2F34-1F57-4FD4-976B-E6C4B909E97D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryFile.Test", "DictionaryFile.Test\DictionaryFile.Test.csproj", "{12FC41F1-24DB-4250-A604-5F143CCF106A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DictionaryFile.Test", "DictionaryFile.Test\DictionaryFile.Test.csproj", "{12FC41F1-24DB-4250-A604-5F143CCF106A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryFile.Infrastructure", "DictionaryFile.Infrastructure\DictionaryFile.Infrastructure.csproj", "{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{12FC41F1-24DB-4250-A604-5F143CCF106A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12FC41F1-24DB-4250-A604-5F143CCF106A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12FC41F1-24DB-4250-A604-5F143CCF106A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

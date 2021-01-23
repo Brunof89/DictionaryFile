@@ -1,5 +1,6 @@
 ﻿using DictionaryFile.Domain.Requests;
 using DictionaryFile.Domain.Services;
+using DictionaryFile.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -34,67 +35,36 @@ namespace DictionaryFile
             // Create service provider
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            try
+            await serviceProvider.GetService<App>().Run();
+
+            IDictionaryFileService _dictionaryService = serviceProvider.GetService<IDictionaryFileService>();
+            IFileService _fileService = serviceProvider.GetService<IFileService>();
+
+            if (args == null)
+                throw new ArgumentNullException("Program must have arguments.");
+
+            if (args.Length != 4)
+                throw new ArgumentException("There must be 4 arguments in the list.");
+
+            if (!_dictionaryService.CheckWordLength(args[1],4))
+                throw new ArgumentException("Start word must have 4 chars.");
+
+            if (!_dictionaryService.CheckWordLength(args[1], 4))
+                throw new ArgumentException("End word must have 4 chars.");
+
+            if (!_fileService.CheckFileExists(configuration.GetSection("FileBasePath").Value + args[0]))
+                throw new FileNotFoundException("File provided not found");
+
+            DictionaryFileRequest inputs = new DictionaryFileRequest
             {
-                await serviceProvider.GetService<App>().Run();
+                FileName = configuration.GetSection("FileBasePath").Value + args[0],
+                EndWord = args[2],
+                ResultFileName = configuration.GetSection("FileBasePath").Value + args[3],
+                StartWord = args[1],
+                WordLength = 4
+            };
 
-                var _dictionaryService = serviceProvider.GetService<IDictionaryFileService>();
-
-                var fileExists = false;
-                var correctWordLength = false;
-                string startWord = string.Empty;
-                string endWord = string.Empty;
-                string dictionaryFilePath = string.Empty;
-                int wordsLength = Convert.ToInt32(configuration.GetSection("WordsLength").Value);
-
-                while (!fileExists)
-                {
-                    Console.WriteLine("DictionaryFile:");
-                    dictionaryFilePath = Console.ReadLine();
-                    //CheckFileExists
-                    fileExists = _dictionaryService.CheckFileExists(configuration.GetSection("FileBasePath").Value + dictionaryFilePath);
-                }
-
-                while (!correctWordLength)
-                {
-                    Console.WriteLine("StartWord:");
-                    startWord = Console.ReadLine();
-                    //Validate length of word
-                    correctWordLength = _dictionaryService.CheckWordLength(startWord, wordsLength);
-                }
-
-                correctWordLength = false;
-
-                while (!correctWordLength)
-                {
-                    Console.WriteLine("EndWord:");
-                    endWord = Console.ReadLine();
-                    //Validate length of word
-                    correctWordLength = _dictionaryService.CheckWordLength(endWord, wordsLength);
-                }
-
-                Console.WriteLine("ResultFile:");
-                string resultFile = Console.ReadLine();
-
-                var inputs = new DictionaryFileRequest
-                {
-                    FileName = configuration.GetSection("FileBasePath").Value + dictionaryFilePath,
-                    EndWord = endWord,
-                    ResultFileName = configuration.GetSection("FileBasePath").Value + resultFile,
-                    StartWord = startWord,
-                    WordLength = wordsLength
-                };
-
-                _dictionaryService.ProcessWords(inputs);
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-            }
+            _dictionaryService.ProcessWords(inputs);
         }
 
         private static void ConfigureServices(IServiceCollection serviceCollection)
@@ -109,6 +79,7 @@ namespace DictionaryFile
             serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
 
             serviceCollection.AddTransient<IDictionaryFileService, DictionaryFileService>();
+            serviceCollection.AddTransient<IFileService, FileService>();
 
             // Add app
             serviceCollection.AddTransient<App>();
