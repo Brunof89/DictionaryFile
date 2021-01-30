@@ -18,6 +18,7 @@
 		  <li>
 			Nuget Packages for NUnit and Moq
 		  </li>
+		  <li>
 			Git	
 		  </li>
 	  </ul>
@@ -31,7 +32,7 @@
   &nbsp;While the program recives inputs from the user it validates straight away the existence of the file and the length of the start and end words.
 		  </li>
 		  <li>
-			As arquitecture of the solutions concerns, o based on the Domain Drive Design (DDD) pattern, where your domain level is responsible 
+			As arquitecture of the solutions concerns, i based on the Domain Drive Design (DDD) pattern, where your domain level is responsible 
 			for the lead of the infrastructure layer and the application layer. Normaly the infrastructure layer has the presistence providers,
 			in this case, it is just a file.
 			In the application layer, it can then be injected into whatever presentation tecnology we want, for example a WebApi,Job routine,
