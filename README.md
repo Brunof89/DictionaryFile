@@ -29,7 +29,14 @@
 			First i made my console app able to inject any kind of service provider. Then as a normal .Net Core app i saved my configurations in a appsettings file, although one of     &nbsp;the best   pratices
   &nbsp;now-a-days the most of the configurations should be saved in enviroment variables.
   &nbsp;While the program recives inputs from the user it validates straight away the existence of the file and the length of the start and end words.
-		  </li>		  
+		  </li>
+		  <li>
+			As arquitecture of the solutions concerns, o based on the Domain Drive Design (DDD) pattern, where your domain level is responsible 
+			for the lead of the infrastructure layer and the application layer. Normaly the infrastructure layer has the presistence providers,
+			in this case, it is just a file.
+			In the application layer, it can then be injected into whatever presentation tecnology we want, for example a WebApi,Job routine,
+			or in this case a console app.
+		  </li>
 	  </ul>
 	</li>
 	<li>
