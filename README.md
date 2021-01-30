@@ -64,7 +64,7 @@
 		  <li>
 			Did not use repository pattern, but most DDD i would have.
 		  </li>
-			Git	
+			Efficient and better way to wirte the algorithm
 		  </li>
 	  </ul>
 	</li>
