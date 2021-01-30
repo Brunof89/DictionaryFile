@@ -48,7 +48,7 @@ namespace DictionaryFile.Domain.Services
         }
 
         /// <summary>
-        /// 
+        /// Calculates the shortest path between 2 words using the BFS algorithm
         /// </summary>
         /// <param name="beginWord"></param>
         /// <param name="endWord"></param>
