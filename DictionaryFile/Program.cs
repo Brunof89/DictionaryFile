@@ -1,4 +1,5 @@
-﻿using DictionaryFile.Domain.Requests;
+﻿using DictionaryFile.Application;
+using DictionaryFile.Domain.Requests;
 using DictionaryFile.Domain.Services;
 using DictionaryFile.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -37,7 +38,7 @@ namespace DictionaryFile
 
             await serviceProvider.GetService<App>().Run();
 
-            IDictionaryFileService _dictionaryService = serviceProvider.GetService<IDictionaryFileService>();
+            IDictionaryFileAppService _dictionaryAppService = serviceProvider.GetService<IDictionaryFileAppService>();
             IFileService _fileService = serviceProvider.GetService<IFileService>();
 
             if (args == null)
@@ -46,10 +47,10 @@ namespace DictionaryFile
             if (args.Length != 4)
                 throw new ArgumentException("There must be 4 arguments in the list.");
 
-            if (!_dictionaryService.CheckWordLength(args[1],4))
+            if (!_dictionaryAppService.CheckWordLength(args[1],4))
                 throw new ArgumentException("Start word must have 4 chars.");
 
-            if (!_dictionaryService.CheckWordLength(args[1], 4))
+            if (!_dictionaryAppService.CheckWordLength(args[1], 4))
                 throw new ArgumentException("End word must have 4 chars.");
 
             if (!_fileService.CheckFileExists(configuration.GetSection("FileBasePath").Value + args[0]))
@@ -64,7 +65,7 @@ namespace DictionaryFile
                 WordLength = 4
             };
 
-            _dictionaryService.ProcessWords(inputs);
+            _dictionaryAppService.ProcessWords(inputs);
         }
 
         private static void ConfigureServices(IServiceCollection serviceCollection)
@@ -78,6 +79,7 @@ namespace DictionaryFile
             // Add access to generic IConfigurationRoot
             serviceCollection.AddSingleton<IConfigurationRoot>(configuration);
 
+            serviceCollection.AddTransient<IDictionaryFileAppService, DictionaryFileAppService>();
             serviceCollection.AddTransient<IDictionaryFileService, DictionaryFileService>();
             serviceCollection.AddTransient<IFileService, FileService>();
 

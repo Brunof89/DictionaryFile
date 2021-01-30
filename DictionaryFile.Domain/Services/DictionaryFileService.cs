@@ -33,20 +33,18 @@ namespace DictionaryFile.Domain.Services
         /// Input method to process file and generate output file
         /// </summary>
         /// <param name="request"></param>
-        public void ProcessWords(DictionaryFileRequest request)
+        public IEnumerable<IEnumerable<string>> ProcessWords(DictionaryFileRequest request,String[] words)
         {
-            if (request == null)
+            if (request is null)
                 throw new ArgumentNullException("Request is empty");
-
-            String[] words = _fileService.ReadFile(request.FileName);
 
             IEnumerable<IEnumerable<string>> resultList = null;
 
             words = words.Where(w => w.Length == request.WordLength).ToArray();
 
             resultList = ShortestPathAlgorithm(request.StartWord, request.EndWord, words.ToList());
-
-            _fileService.CreateOutputFile(request.ResultFileName, resultList);
+            
+            return resultList;
         }
 
         /// <summary>

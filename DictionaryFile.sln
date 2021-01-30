@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DictionaryFile.Domain", "Di
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DictionaryFile.Test", "DictionaryFile.Test\DictionaryFile.Test.csproj", "{12FC41F1-24DB-4250-A604-5F143CCF106A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryFile.Infrastructure", "DictionaryFile.Infrastructure\DictionaryFile.Infrastructure.csproj", "{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DictionaryFile.Infrastructure", "DictionaryFile.Infrastructure\DictionaryFile.Infrastructure.csproj", "{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DictionaryFile.Application", "DictionaryFile.Application\DictionaryFile.Application.csproj", "{FB2585CA-C0C5-4559-B855-39B1CFACD11F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F15B6FC-65E4-4DA4-B3BD-03EDBC62D4D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB2585CA-C0C5-4559-B855-39B1CFACD11F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB2585CA-C0C5-4559-B855-39B1CFACD11F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB2585CA-C0C5-4559-B855-39B1CFACD11F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2585CA-C0C5-4559-B855-39B1CFACD11F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,7 +6,7 @@ namespace DictionaryFile.Domain.Services
 {
     public interface IDictionaryFileService
     {
-        void ProcessWords(DictionaryFileRequest request);
+        IEnumerable<IEnumerable<string>> ProcessWords(DictionaryFileRequest request, String[] words);
         bool CheckWordLength(string word, int length);
     }
 }

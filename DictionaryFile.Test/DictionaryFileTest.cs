@@ -2,6 +2,7 @@ using DictionaryFile.Domain.Requests;
 using DictionaryFile.Domain.Services;
 using DictionaryFile.Infrastructure;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace DictionaryFile.Test
@@ -52,41 +53,84 @@ namespace DictionaryFile.Test
             Assert.IsFalse(this.dictionaryFileService.CheckWordLength("words", 4));
         }
 
-  
-
-
         [Test]
         public void ValidateWordsTestTrue()
         {
-            //var inputWords = new string[] { "rant", "rape", "rapt", "rare", "rasa", "rash", "rasp", "rata", "rate" };
-            var inputWords = new string[] { "rant", "ront", "rott", "rotu"};
-            var result = new string[] { "rant", "ront", "rotu"};
+            var inputWords = new string[] { "spin", "spit", "spat", "spot", "span" };
+            var r1 = new List<string> { "spin", "spit", "spot" };
+            var result = new List<List<string>> { r1 };
 
-            this.dictionaryFileService.ProcessWords(new DictionaryFileRequest 
+            var difference = this.dictionaryFileService.ProcessWords(new DictionaryFileRequest
             {
-                EndWord = "rotu",
-                FileName ="input",
-                ResultFileName ="output",
-                StartWord= "rant"
-            });
-            //Assert.AreEqual(difference, result);
+                EndWord = "spot",
+                FileName = "input",
+                ResultFileName = "output",
+                StartWord = "spin",
+                WordLength = 4
+            }, inputWords);
+            Assert.AreEqual(difference, result);
         }
-
 
         [Test]
         public void ValidateWordsTestFalse()
         {
-            var inputWords = new string[] { "rant", "ront", "rott", "rotu" };
-            var result = new string[] { "rant", "ront", "rotu" };
+            var inputWords = new string[] { "spin", "spit", "spat", "spot","span" };
+            var r1 = new List<string> { "spin", "spat", "spot" };
+            var result = new List<List<string>> { r1 };
 
-            this.dictionaryFileService.ProcessWords(new DictionaryFileRequest
+            var difference = this.dictionaryFileService.ProcessWords(new DictionaryFileRequest
             {
-                EndWord = "rotu",
+                EndWord = "spot",
                 FileName = "input",
                 ResultFileName = "output",
-                StartWord = "rant"
-            });
-            //Assert.AreNotEqual(difference, inputWords);
+                StartWord = "spin",
+                WordLength = 4
+            }, inputWords);
+            Assert.AreNotEqual(difference, result);
+        }
+
+        [Test]
+        public void ValidateWordsTestNullInput()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() => { this.dictionaryFileService.ProcessWords(null, null); });
+            Assert.AreEqual("Request is empty", exception.ParamName);
+
+        }
+
+        [Test]
+        public void ValidateWordsTestTrueReverse()
+        {
+            var inputWords = new string[] { "spin", "spit", "spat", "spot", "span" };
+            var r1 = new List<string> { "spot", "spit", "spin" };
+            var result = new List<List<string>> { r1 };
+
+            var difference = this.dictionaryFileService.ProcessWords(new DictionaryFileRequest
+            {
+                EndWord = "spin",
+                FileName = "input",
+                ResultFileName = "output",
+                StartWord = "spot",
+                WordLength = 4
+            }, inputWords);
+            Assert.AreEqual(difference, result);
+        }
+
+        [Test]
+        public void ValidateWordsTestFalseReverse()
+        {
+            var inputWords = new string[] { "spin", "spit", "spat", "spot", "span" };
+            var r1 = new List<string> { "spin", "spit", "spot" };
+            var result = new List<List<string>> { r1 };
+
+            var difference = this.dictionaryFileService.ProcessWords(new DictionaryFileRequest
+            {
+                EndWord = "spin",
+                FileName = "input",
+                ResultFileName = "output",
+                StartWord = "spot",
+                WordLength = 4
+            }, inputWords);
+            Assert.AreNotEqual(difference, result);
         }
 
     }

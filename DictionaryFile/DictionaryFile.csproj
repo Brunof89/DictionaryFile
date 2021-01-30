@@ -18,8 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DictionaryFile.Domain\DictionaryFile.Domain.csproj" />
-    <ProjectReference Include="..\DictionaryFile.Infrastructure\DictionaryFile.Infrastructure.csproj" />
+    <ProjectReference Include="..\DictionaryFile.Application\DictionaryFile.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
