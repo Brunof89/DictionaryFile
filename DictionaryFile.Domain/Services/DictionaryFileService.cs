@@ -44,16 +44,25 @@ namespace DictionaryFile.Domain.Services
 
             words = words.Where(w => w.Length == request.WordLength).ToArray();
 
-            resultList = FindLadders(request.StartWord, request.EndWord, words.ToList());
+            resultList = ShortestPathAlgorithm(request.StartWord, request.EndWord, words.ToList());
 
             _fileService.CreateOutputFile(request.ResultFileName, resultList);
         }
 
-        public List<List<string>> FindLadders(string beginWord, string endWord, List<string> wordList)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="beginWord"></param>
+        /// <param name="endWord"></param>
+        /// <param name="wordList"></param>
+        /// <returns></returns>
+        private List<List<string>> ShortestPathAlgorithm(string beginWord, string endWord, List<string> wordList)
         {
 
             Dictionary<string, HashSet<string>> graph = new Dictionary<string, HashSet<string>>();
+
             AddWordToGraph(beginWord, graph);
+            
             foreach (string word in wordList)
                 AddWordToGraph(word, graph);
 

@@ -1,6 +1,6 @@
-cake;lake;like;lime;limp
-cake;lake;lame;lime;limp
-cake;came;lame;lime;limp
-cake;lake;lame;lamp;limp
-cake;came;lame;lamp;limp
-cake;came;camp;lamp;limp
+limp;lamp;camp;came;cake
+limp;lamp;lame;came;cake
+limp;lime;lame;came;cake
+limp;lamp;lame;lake;cake
+limp;lime;lame;lake;cake
+limp;lime;like;lake;cake

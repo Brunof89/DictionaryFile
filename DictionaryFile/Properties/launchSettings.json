@@ -2,7 +2,7 @@
   "profiles": {
     "DictionaryFile": {
       "commandName": "Project",
-      "commandLineArgs": "\"words-english.txt\" cake limp \"output.txt\"",
+      "commandLineArgs": "\"words-english.txt\" limp cake \"output.txt\"",
       "environmentVariables": {
         "MainFilePath": "C:\\Projectos\\DictionaryFile\\DictionaryFile\\DictionaryFile"
       }
