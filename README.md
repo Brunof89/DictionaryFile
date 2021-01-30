@@ -23,9 +23,6 @@
 	  </ul>
 	</li>
 	<li>
-	
-
-  &nbsp;</br>
 		<strong>Problem resolution:</strong></br>
 		<ul>
 		  <li>
@@ -36,9 +33,6 @@
 	  </ul>
 	</li>
 	<li>
-	
-</br>
-  
 		<strong>Algorithim ( Breadth-first search )</strong>
 		<ul>
 		  <li>
@@ -47,11 +41,8 @@
 		  </li>		  
 	  </ul>
 	</li>
-	<li>
-	
-	<strong>Problems encountered:</strong></br>
-
-		
+	<li>	
+	<strong>Problems encountered:</strong></br>		
 		<ul>
 		  <li>
 			Understanding what the algorithim had to do. For example, if it could have more than one change in the same charcter index.
@@ -69,7 +60,6 @@
 		  </li>
 	  </ul>
 	</li>
-
 </ul>  
   
   
